@@ -32,6 +32,9 @@ def test_dashboard_launch_fields_and_single_point_chart():
         page.route('**/api/**',api)
         page.goto(f'http://127.0.0.1:{server.server_port}/static/index.html')
         page.wait_for_selector('#launch')
+        assert page.locator('main').bounding_box()['y']<150
+        assert page.locator('main').bounding_box()['width']>1000
+        assert page.locator('#toast').evaluate('(e)=>getComputedStyle(e).position')=='fixed'
         page.click('#launch')
         page.check('#launch-dialog .model-list input')
         page.get_by_role('button',name='Start run',exact=True).click()
