@@ -1,0 +1,27 @@
+name: broodbench
+services:
+  broodbench:
+    image: broodbench:0.1.0
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${BIND_IP:?Set BIND_IP to your private LAN address}:8798:8798"
+    environment:
+      BROODBENCH_DATA: /data
+    volumes:
+      - broodbench-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 1g
+    cpus: 2
+    stop_grace_period: 15s
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+volumes:
+  broodbench-data:

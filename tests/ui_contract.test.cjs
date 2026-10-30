@@ -1,0 +1,13 @@
+const fs = require('fs');
+const vm = require('vm');
+const assert = require('assert');
+const html = fs.readFileSync(__dirname + '/../static/index.html','utf8');
+const js = fs.readFileSync(__dirname + '/../static/app.js','utf8');
+assert(html.includes('id="app"'), 'app mount exists');
+assert(js.includes('/api/providers') && js.includes('/api/runs'), 'UI calls contract endpoints');
+assert(js.includes('textContent'), 'untrusted model labels rendered as text');
+assert(js.includes('allow_paid'), 'paid consent is explicit');
+assert(js.includes('context_sizes'), 'context sizes included');
+assert(js.includes('api/runs/') && js.includes('/stop'), 'run stop is wired');
+assert(js.includes('export?format='), 'evidence export wired');
+console.log('ui contract checks passed');
